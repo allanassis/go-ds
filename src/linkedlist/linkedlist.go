@@ -33,6 +33,11 @@ func (list *Linkedlist[T]) Add(data T) *Node[T] {
 	}
 	list.tail = n
 
+	if list.root == nil {
+		list.root = n
+		return n
+	}
+
 	current := list.root
 	for current.next != nil {
 		current = current.next
@@ -65,6 +70,9 @@ func (list *Linkedlist[T]) Remove(id string) *Node[T] {
 
 func (list *Linkedlist[T]) Update(id string, data T) *Node[T] {
 	current := list.root
+	if list.root == nil {
+		return nil
+	}
 
 	for current != nil {
 		if current.Id == id {
@@ -79,6 +87,10 @@ func (list *Linkedlist[T]) Update(id string, data T) *Node[T] {
 
 func (list *Linkedlist[T]) Print() {
 	current := list.root
+	if current == nil {
+		fmt.Printf("Empty List!")
+	}
+
 	for current != nil {
 		fmt.Printf("Node: id: %s | value: %v\n", current.Id, current.Data)
 		current = current.next
@@ -88,6 +100,10 @@ func (list *Linkedlist[T]) Print() {
 func (list *Linkedlist[T]) ToString() string {
 	current := list.root
 	raw := ""
+	if current == nil {
+		return raw
+	}
+
 	for current != nil {
 		raw = raw + fmt.Sprintf("%v - ", current.Data)
 		current = current.next
@@ -95,15 +111,9 @@ func (list *Linkedlist[T]) ToString() string {
 	return raw
 }
 
-func NewLinkedList[T any](data T) *Linkedlist[T] {
-	node := &Node[T]{
-		Id:   uuid.NewString(),
-		Data: data,
-		next: nil,
-	}
-
+func NewLinkedList[T any]() *Linkedlist[T] {
 	return &Linkedlist[T]{
-		root: node,
-		tail: node,
+		root: nil,
+		tail: nil,
 	}
 }

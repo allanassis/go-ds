@@ -11,7 +11,7 @@ var _ = Describe("Linkedlist", func() {
 	var list *linkedlist.Linkedlist[int]
 
 	BeforeEach(func() {
-		list = linkedlist.NewLinkedList(0)
+		list = linkedlist.NewLinkedList[int]()
 	})
 
 	Describe("Adding to the linkedList", func() {
@@ -21,7 +21,7 @@ var _ = Describe("Linkedlist", func() {
 				list.Add(1)
 				list.Add(2)
 				// assert
-				Expect(list.Root().Data).To(Equal(0))
+				Expect(list.Root().Data).To(Equal(1))
 			})
 			It("should return the tail node", func() {
 				// arrange/acr
@@ -35,7 +35,7 @@ var _ = Describe("Linkedlist", func() {
 				list.Add(1)
 				list.Add(2)
 				// assert
-				Expect(list.ToString()).To(Equal("0 - 1 - 2 - "))
+				Expect(list.ToString()).To(Equal("1 - 2 - "))
 			})
 			It("should have the itens removed", func() {
 				// arrange
@@ -46,7 +46,7 @@ var _ = Describe("Linkedlist", func() {
 				list.Remove(node1.Id)
 				list.Remove(node2.Id)
 				// assert
-				Expect(list.ToString()).To(Equal("0 - 2 - "))
+				Expect(list.ToString()).To(Equal("2 - "))
 			})
 			It("should have the itens updated", func() {
 				// arrange
@@ -55,7 +55,7 @@ var _ = Describe("Linkedlist", func() {
 				//act
 				list.Update(node.Id, 3)
 				// assert
-				Expect(list.ToString()).To(Equal("0 - 1 - 3 - "))
+				Expect(list.ToString()).To(Equal("1 - 3 - "))
 			})
 		})
 	})
