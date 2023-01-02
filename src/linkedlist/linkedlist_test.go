@@ -8,38 +8,40 @@ import (
 )
 
 var _ = Describe("Linkedlist", func() {
-	var root *linkedlist.Node[int]
+	var list *linkedlist.Linkedlist[int]
 
 	BeforeEach(func() {
-		root = linkedlist.NewLinkedList(0)
+		list = linkedlist.NewLinkedList(0)
 	})
 
 	Describe("Adding to the linkedList", func() {
 		Context("with numbers", func() {
 			It("should have the itens added", func() {
 				// arrange/acr
-				root.Add(1)
-				root.Add(2)
+				list.Add(1)
+				list.Add(2)
 				// assert
-				Expect(root.ToString()).To(Equal("0 - 1 - 2 - "))
+				Expect(list.ToString()).To(Equal("0 - 1 - 2 - "))
 			})
 			It("should have the itens removed", func() {
 				// arrange
-				root.Add(1)
-				node := root.Add(2)
+				node1 := list.Add(1)
+				list.Add(2)
+				node2 := list.Add(3)
 				// act
-				root.Remove(node.Id)
+				list.Remove(node1.Id)
+				list.Remove(node2.Id)
 				// assert
-				Expect(root.ToString()).To(Equal("0 - 1 - "))
+				Expect(list.ToString()).To(Equal("0 - 2 - "))
 			})
 			It("should have the itens removed", func() {
 				// arrange
-				root.Add(1)
-				node := root.Add(2)
+				list.Add(1)
+				node := list.Add(2)
 				//act
-				root.Update(node.Id, 3)
+				list.Update(node.Id, 3)
 				// assert
-				Expect(root.ToString()).To(Equal("0 - 1 - 3 "))
+				Expect(list.ToString()).To(Equal("0 - 1 - 3 - "))
 			})
 		})
 	})

@@ -6,19 +6,26 @@ import (
 	"github.com/google/uuid"
 )
 
+type Linkedlist[T any] struct {
+	root *Node[T]
+	tail *Node[T]
+}
+
 type Node[T any] struct {
 	Id   string
 	data T
 	next *Node[T]
 }
 
-func (node *Node[T]) Add(data T) *Node[T] {
+func (list *Linkedlist[T]) Add(data T) *Node[T] {
 	n := &Node[T]{
 		Id:   uuid.NewString(),
 		data: data,
 		next: nil,
 	}
-	current := node
+	list.tail = n
+
+	current := list.root
 	for current.next != nil {
 		current = current.next
 	}
@@ -27,15 +34,18 @@ func (node *Node[T]) Add(data T) *Node[T] {
 	return n
 }
 
-func (node *Node[T]) Remove(id string) *Node[T] {
-	if node.Id == id {
-		node = node.next
+func (list *Linkedlist[T]) Remove(id string) *Node[T] {
+	if list.root.Id == id {
+		list.root = list.root.next
 	}
 
-	previews := node
-	current := node
-	for current.next != nil {
+	previews := list.root
+	current := list.root
+	for current != nil {
 		if current.Id == id {
+			if current.Id == list.tail.Id {
+				list.tail = previews
+			}
 			previews.next = current.next
 			return current
 		}
@@ -45,8 +55,8 @@ func (node *Node[T]) Remove(id string) *Node[T] {
 	return nil
 }
 
-func (node *Node[T]) Update(id string, data T) *Node[T] {
-	current := node
+func (list *Linkedlist[T]) Update(id string, data T) *Node[T] {
+	current := list.root
 
 	for current != nil {
 		if current.Id == id {
@@ -59,16 +69,16 @@ func (node *Node[T]) Update(id string, data T) *Node[T] {
 	return nil
 }
 
-func (node *Node[T]) Print() {
-	current := node
+func (list *Linkedlist[T]) Print() {
+	current := list.root
 	for current != nil {
 		fmt.Printf("Node: id: %s | value: %v\n", current.Id, current.data)
 		current = current.next
 	}
 }
 
-func (node *Node[T]) ToString() string {
-	current := node
+func (list *Linkedlist[T]) ToString() string {
+	current := list.root
 	raw := ""
 	for current != nil {
 		raw = raw + fmt.Sprintf("%v - ", current.data)
@@ -77,10 +87,15 @@ func (node *Node[T]) ToString() string {
 	return raw
 }
 
-func NewLinkedList[T any](data T) *Node[T] {
-	return &Node[T]{
+func NewLinkedList[T any](data T) *Linkedlist[T] {
+	node := &Node[T]{
 		Id:   uuid.NewString(),
 		data: data,
 		next: nil,
+	}
+
+	return &Linkedlist[T]{
+		root: node,
+		tail: node,
 	}
 }
