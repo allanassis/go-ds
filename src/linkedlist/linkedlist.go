@@ -13,14 +13,22 @@ type Linkedlist[T any] struct {
 
 type Node[T any] struct {
 	Id   string
-	data T
+	Data T
 	next *Node[T]
+}
+
+func (list *Linkedlist[T]) Root() *Node[T] {
+	return list.root
+}
+
+func (list *Linkedlist[T]) Tail() *Node[T] {
+	return list.tail
 }
 
 func (list *Linkedlist[T]) Add(data T) *Node[T] {
 	n := &Node[T]{
 		Id:   uuid.NewString(),
-		data: data,
+		Data: data,
 		next: nil,
 	}
 	list.tail = n
@@ -60,7 +68,7 @@ func (list *Linkedlist[T]) Update(id string, data T) *Node[T] {
 
 	for current != nil {
 		if current.Id == id {
-			current.data = data
+			current.Data = data
 			return current
 		}
 		current = current.next
@@ -72,7 +80,7 @@ func (list *Linkedlist[T]) Update(id string, data T) *Node[T] {
 func (list *Linkedlist[T]) Print() {
 	current := list.root
 	for current != nil {
-		fmt.Printf("Node: id: %s | value: %v\n", current.Id, current.data)
+		fmt.Printf("Node: id: %s | value: %v\n", current.Id, current.Data)
 		current = current.next
 	}
 }
@@ -81,7 +89,7 @@ func (list *Linkedlist[T]) ToString() string {
 	current := list.root
 	raw := ""
 	for current != nil {
-		raw = raw + fmt.Sprintf("%v - ", current.data)
+		raw = raw + fmt.Sprintf("%v - ", current.Data)
 		current = current.next
 	}
 	return raw
@@ -90,7 +98,7 @@ func (list *Linkedlist[T]) ToString() string {
 func NewLinkedList[T any](data T) *Linkedlist[T] {
 	node := &Node[T]{
 		Id:   uuid.NewString(),
-		data: data,
+		Data: data,
 		next: nil,
 	}
 
